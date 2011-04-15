@@ -237,15 +237,14 @@ module ScribdFu
 
     # Display the iPaper document in a view
     def display_ipaper(options = {})
-      <<-END
-        <script type="text/javascript" src="http://www.scribd.com/javascripts/view.js"></script>
-        <div id="embedded_flash">#{options.delete(:alt)}</div>
-        <script type="text/javascript">
-          var scribd_doc = scribd.Document.getDoc(#{ipaper_id}, '#{ipaper_access_key}');
-          #{js_params(options)}
-          scribd_doc.write("embedded_flash");
-        </script>
-      END
+      id = options.delete(:id) # nil is OK
+      %^<script type="text/javascript" src="http://www.scribd.com/javascripts/view.js"></script>
+      <div id="embedded_flash#{id}">#{options.delete(:alt)}</div>
+      <script type="text/javascript">
+        var scribd_doc = scribd.Document.getDoc(#{ipaper_id}, '#{ipaper_access_key}');
+        #{js_params(options)}
+        scribd_doc.write("embedded_flash#{id}");
+      </script>^
     end
 
 
